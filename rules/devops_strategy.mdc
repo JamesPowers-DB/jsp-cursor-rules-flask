@@ -1,0 +1,54 @@
+---
+alwaysApply: false
+---
+## Testing
+
+### Structure
+- Use pytest as the test framework
+- Organize tests to mirror application structure
+- Use fixtures for database and mock Databricks connections
+
+### Coverage
+- Aim for >80% code coverage
+- Focus on service layer and critical business logic
+- Use mocks for external API calls (Databricks)
+
+```python
+# tests/conftest.py
+import pytest
+from app import create_app
+from app.models import db
+
+@pytest.fixture
+def app():
+    app = create_app('testing')
+    with app.app_context():
+        db.create_all()
+        yield app
+        db.session.remove()
+        db.drop_all()
+
+@pytest.fixture
+def client(app):
+    return app.test_client()
+```
+
+## Security
+
+### Best Practices
+- Use Flask-WTF for CSRF protection
+- Validate all user inputs
+- Use parameterized queries (SQLAlchemy handles this)
+- Implement rate limiting on API endpoints
+- Use Flask-Login for authentication if needed
+
+### Secrets Management
+- Never hardcode credentials
+
+## Deployment Considerations
+
+### Production Checklist
+- Set `FLASK_ENV=production`
+- Configure proper logging
+- Use database connection pooling
+- Implement health check endpoint (`/health`)

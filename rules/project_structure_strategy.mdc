@@ -1,0 +1,60 @@
+---
+alwaysApply: true
+---
+
+## Core Stack
+- Python
+- Flask with Blueprints architecture
+- PostgreSQL for all database operations
+- Databricks SDK for Python for all Databricks integrations
+- SQLAlchemy as ORM
+- Alembic for database migrations
+
+## Project Structure
+```
+project/
+├── app/
+│   ├── __init__.py           # Flask app factory
+│   ├── models/               # SQLAlchemy models
+│   ├── routes/               # Blueprint route definitions
+│   ├── services/             # Business logic layer
+│   │   └── databricks/       # Databricks integration services
+│   ├── utils/                # Utility functions
+│   ├── static/
+│   │   ├── css/
+│   │   │   └── custom.css    # Custom styles extending Milligram
+│   │   └── js/
+│   │       └── main.js       # Minimal vanilla JavaScript
+│   └── templates/            # Jinja2 templates
+├── migrations/               # Alembic migrations
+├── tests/
+├── config.py                 # Configuration management
+├── requirements.txt
+└── .env.example
+```
+
+## Architecture Principles
+
+### Separation of Concerns
+- **Routes** (controllers): Handle HTTP request/response only
+- **Services**: Contain all business logic and external API calls
+- **Models**: Database schema and simple data validation
+- **Utils**: Pure functions with no side effects
+
+### Service Layer Pattern
+- All Databricks API calls must go through service classes in `app/services/databricks/`
+- Services should be instantiated once and reused (consider Flask application context)
+- Use dependency injection for services in routes
+
+Example:
+```python
+# app/services/databricks/workspace_service.py
+from databricks.sdk import WorkspaceClient
+
+class WorkspaceService:
+    def __init__(self, client: WorkspaceClient):
+        self.client = client
+    
+    def list_jobs(self):
+        return self.client.jobs.list()
+```

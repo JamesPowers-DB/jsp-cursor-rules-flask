@@ -1,0 +1,39 @@
+---
+alwaysApply: true
+---
+
+
+## Configuration
+
+### Environment Variables
+- Use `python-dotenv` to load `.env` files
+- Never commit `.env` to version control
+- Provide `.env.example` with all required variables
+
+Required variables:
+```
+FLASK_APP=app
+FLASK_ENV=development
+SECRET_KEY=your-secret-key
+DATABASE_URL=postgresql://user:pass@localhost:5432/dbname
+DATABRICKS_HOST=https://your-workspace.databricks.com
+DATABRICKS_TOKEN=your-token
+```
+
+### Config Classes
+```python
+# config.py
+import os
+
+class Config:
+    SECRET_KEY = os.environ.get('SECRET_KEY')
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
+    DATABRICKS_HOST = os.environ.get('DATABRICKS_HOST')
+    DATABRICKS_TOKEN = os.environ.get('DATABRICKS_TOKEN')
+
+class DevelopmentConfig(Config):
+    DEBUG = True
+
+class ProductionConfig(Config):
+    DEBUG = False
+```
