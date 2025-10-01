@@ -1,6 +1,6 @@
 # Cursor Rules Documentation
 
-This directory contains Cursor AI assistant rules that define development standards, patterns, and best practices for the `db-data-fab` project. These rules help ensure consistent code quality and architectural decisions throughout the development process.
+This directory contains Cursor AI assistant rules that define development standards, patterns, and best practices for Flask projects. These rules help ensure consistent code quality and architectural decisions throughout the development process.
 
 ## Overview
 
